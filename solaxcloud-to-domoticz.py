@@ -16,7 +16,7 @@ domoticzurl = '192.168.2.191:8080' # Domoticz IP and port
 #
 id_inverterSN = '' # Domoticz IDX for inverterSN
 id_sn = '' # Domoticz IDX for sn
-id_acpower = '' # Domoticz IDX for acpower
+id_acpower = '51' # Domoticz IDX for acpower
 id_yieldtoday = '50' # Domoticz IDX for yieldtoday in kW
 id_yieldtotal = '49' # Domoticz IDX for yieldtotal in kW
 id_feedinpower = '' # Domoticz IDX for feedinpower
@@ -32,16 +32,19 @@ id_inverterStatus = '' # Domoticz IDX for inverterStatus
 id_uploadTime = '' # Domoticz IDX for uploadTime
 id_success = '' # Domoticz IDX for success
 #
-# --------- end of config part
 # --------- Magic starts here
-soluxcloudurl = 'https://www.eu.solaxcloud.com:9443/proxy/api/getRealtimeInfo.do?tokenId='+myapitoken+'&sn='+mydonglesn+'' #Create URL with token and SN
+soluxcloudurl = 'https://www.eu.solaxcloud.com:9443/proxy/api/getRealtimeInfo.do?tokenId='+myapitoken+'&sn='+mydonglesn+'' # Create URL with token and SN
+
 response = urllib.request.urlopen(soluxcloudurl)
 reader = codecs.getreader("utf-8")
-responseDictionary = json.load(reader(response))
-SoluxData = responseDictionary["result"]
-domoticzurl_yieldtotal  = 'http://%s/json.htm?type=command&param=udevice&idx=%s&nvalue=0&svalue=%s' % (domoticzurl,id_yieldtotal, SoluxData["yieldtotal"])
-domoticzurl_yieldtoday  = 'http://%s/json.htm?type=command&param=udevice&idx=%s&nvalue=0&svalue=%s' % (domoticzurl,id_yieldtoday, SoluxData["yieldtoday"])
+responseDictionary = json.load(reader(response)) 
+SoluxData = responseDictionary["result"] # get only results from JSON response 
 
-urls = [domoticzurl_yieldtotal, domoticzurl_yieldtoday]
+domoticzurl_yieldtotal  = 'http://%s/json.htm?type=command&param=udevice&idx=%s&nvalue=0&svalue=%s' % (domoticzurl,id_yieldtotal, SoluxData["yieldtotal"]*1000) # yieldtotal in Watt
+domoticzurl_yieldtoday  = 'http://%s/json.htm?type=command&param=udevice&idx=%s&nvalue=0&svalue=%s' % (domoticzurl,id_yieldtoday, SoluxData["yieldtoday"]*1000) # yieldtoday in Watt
+domoticzurl_acpower  = 'http://%s/json.htm?type=command&param=udevice&idx=%s&nvalue=0&svalue=%s' % (domoticzurl,id_acpower, SoluxData["acpower"]) # acpower in Watt 
+
+urls = [domoticzurl_yieldtotal, domoticzurl_yieldtoday, domoticzurl_acpower] 
+
 for url in urls:
     urllib.request.urlopen(url)
