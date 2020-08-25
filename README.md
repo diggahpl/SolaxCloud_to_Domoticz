@@ -48,7 +48,10 @@ or add this as a system cronjob
 
 ```
 echo "*/1 * * * * root /home/pi/SolaxCloud-to-domoticz/solaxcloud-to-domoticz.py | logger" > /etc/cron.d/solaxcloud-to-domoticz
-
 ```
 
+# This script is based on 
 
+``
+https://github.com/zmielna/smogomierz-to-domoticz
+```
