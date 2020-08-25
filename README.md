@@ -36,7 +36,7 @@ domoticzurl = '192.168.2.191:8080' # Domoticz IP and port
 
 5. Take a note of your Domoticz devices IDX numbers and adjust `solaxcloud-to-domoticz.py` id_= values respectively, lines 19 to 21 for Solax X3 MIC inverter  .
 
-6. Finally add cronjob triggered Python script that will fetch data from Smogomierz and push into Domoticz
+6. Finally add cronjob triggered Python script that will fetch data from SolaxCloud and push into Domoticz
 
 Either `crontab -e` for pi user
 
